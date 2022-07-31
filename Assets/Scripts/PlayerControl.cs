@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class PlayerControl : MonoBehaviour
 {
+    const float RaycastDist = 50;
+    const float MoveForce = 100;
+
+    const int MaxJumpCount = 2;
+
     public float WalkingSpeed = 10;
     public float JumpSpeed = 5;
     public float Speed = 10;
@@ -12,17 +17,27 @@ public class PlayerControl : MonoBehaviour
     public Transform GroundChecker;
     public LayerMask GroundMask;
 
+    public GameObject Box;
+
     public Vector3 PlatformDeltaPos;
 
     public AudioSource JumpSnd;
 
     private CharacterController controller;
     private float verticalSpeed = 0;
+    private int JumpCount = 0;
+
+    private Collider _collider;
+
+    private NoSpamAction _jumpAction;
 
     // Start is called before the first frame update
     void Start()
     {
         controller = GetComponent<CharacterController>();
+        _collider = GetComponent<Collider>();
+
+        _jumpAction = new NoSpamAction(200, Jump);
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -32,6 +47,7 @@ public class PlayerControl : MonoBehaviour
     void FixedUpdate()
     {
         Move();
+        UseAbilities();
 
         if (Input.GetKey(KeyCode.Escape))
         {
@@ -52,13 +68,15 @@ public class PlayerControl : MonoBehaviour
         {
             verticalSpeed -= Gravity * Time.deltaTime;
         }
-        else if (Input.GetButton("Jump"))
-        {
-            verticalSpeed = JumpSpeed;
-        }
         else
         {
+            JumpCount = 0;
             verticalSpeed = 0;
+        }
+
+        if (Input.GetButton("Jump") && JumpCount < MaxJumpCount)
+        {
+            _jumpAction.Run();
         }
 
         moveBy.y = verticalSpeed;
@@ -66,8 +84,37 @@ public class PlayerControl : MonoBehaviour
         controller.Move(moveBy * Time.deltaTime + PlatformDeltaPos);
     }
 
+    private void Jump()
+    {
+        JumpCount++;
+        verticalSpeed = JumpSpeed;
+    }
+
+    private void UseAbilities()
+    {
+        if (Input.GetKey("z"))
+        {
+            TryMoveObject();
+        }
+    }
+
     bool IsGrounded()
     {
         return controller.isGrounded;
+    }
+
+    void TryMoveObject()
+    { 
+        var ray = new Ray() { origin = transform.position, direction = transform.forward };
+        var hitInfo = new RaycastHit();
+
+        if (Physics.Raycast(ray, out hitInfo, RaycastDist))
+        {
+            if (hitInfo.collider.gameObject.tag == "Moveable")
+            {
+                var rb = hitInfo.collider.gameObject.GetComponent<Rigidbody>();
+                rb.AddForce(transform.forward * MoveForce);
+            }
+        }
     }
 }
