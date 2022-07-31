@@ -19,7 +19,6 @@ public class StickyPlatform : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log($"Collision with: {collision.gameObject.name}");
         if (collision.gameObject.name == "Player")
         {
             player = collision.gameObject.GetComponent<PlayerControl>();
@@ -29,6 +28,24 @@ public class StickyPlatform : MonoBehaviour
     private void OnCollisionExit(Collision collision)
     {
         if (collision.gameObject.name == "Player")
+        {
+            player.PlatformDeltaPos = new Vector3();
+            player = null;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.name == "Player")
+        {
+            player = other.gameObject.GetComponent<PlayerControl>();
+        }
+
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.name == "Player")
         {
             player.PlatformDeltaPos = new Vector3();
             player = null;
