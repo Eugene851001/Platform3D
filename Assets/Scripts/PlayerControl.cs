@@ -34,6 +34,7 @@ public class PlayerControl : MonoBehaviour
     private Collider _collider;
 
     private NoSpamAction _jumpAction;
+    private bool _isPaltformGrounded;
 
 
     // Start is called before the first frame update
@@ -64,7 +65,12 @@ public class PlayerControl : MonoBehaviour
         }
     }
 
-    private void Move()
+    public void OnCollisionPatform(bool enter)
+    {
+        _isPaltformGrounded = enter;
+    }
+
+    private void Move() 
     {
         float dx = Input.GetAxis("Horizontal");
         float dz = Input.GetAxis("Vertical");
@@ -73,7 +79,7 @@ public class PlayerControl : MonoBehaviour
         //moveBy.x = moveBy.x * Mathf.Sin(CameraYaw);
         //moveBy.y = moveBy.y * Mathf.Cos(CameraYaw);
 
-        if (!IsGrounded())
+        if (!IsGrounded() && !_isPaltformGrounded)
         {
             verticalSpeed -= Gravity * Time.deltaTime;
         }

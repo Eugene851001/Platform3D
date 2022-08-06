@@ -39,6 +39,7 @@ public class StickyPlatform : MonoBehaviour
         if (other.gameObject.name == "Player")
         {
             player = other.gameObject.GetComponent<PlayerControl>();
+            player.OnCollisionPatform(true);
         }
     }
 
@@ -46,6 +47,7 @@ public class StickyPlatform : MonoBehaviour
     {
         if (other.gameObject.name == "Player")
         {
+            player.OnCollisionPatform(false);
             player.PlatformDeltaPos = new Vector3();
             player = null;
         }
