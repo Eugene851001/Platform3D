@@ -22,13 +22,13 @@ public class AbilitiesDialog : Dialog
 
     protected override void OnFirstButton()
     {
-        _abilitiesManager.Ablilities.Add(Ablilities.DoubleJump);
+        _abilitiesManager.Add(Ablilities.DoubleJump);
         GameManager.Instance.UpdateGameState(GameState.Main);
     }
 
     protected override void OnSecondButton()
     {
-        _abilitiesManager.Ablilities.Add(Ablilities.MoveObjects);
+        _abilitiesManager.Add(Ablilities.MoveObjects);
         GameManager.Instance.UpdateGameState(GameState.Main);
     }
 }

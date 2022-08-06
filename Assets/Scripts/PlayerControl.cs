@@ -7,7 +7,7 @@ public class PlayerControl : MonoBehaviour
     const float RaycastDist = 50;
     const float MoveForce = 100;
 
-    const int MaxJumpCount = 2;
+    private int MaxJumpCount = 1;
 
     public float WalkingSpeed = 10;
     public float JumpSpeed = 5;
@@ -16,7 +16,8 @@ public class PlayerControl : MonoBehaviour
     public float CameraYaw;
     public Transform GroundChecker;
     public LayerMask GroundMask;
-    public HashSet<Ablilities> CurrentAbilities = new HashSet<Ablilities>();
+    public GameObject _ablitiesContainer;
+
 
     public GameObject Box;
 
@@ -28,15 +29,22 @@ public class PlayerControl : MonoBehaviour
     private float verticalSpeed = 0;
     private int JumpCount = 0;
 
+    private AbilitiesManager _abilitiesManager;
+
     private Collider _collider;
 
     private NoSpamAction _jumpAction;
+
 
     // Start is called before the first frame update
     void Start()
     {
         controller = GetComponent<CharacterController>();
         _collider = GetComponent<Collider>();
+        _abilitiesManager = _ablitiesContainer.GetComponent<AbilitiesManager>();
+
+        _abilitiesManager.OnAbilityAdd += OnAbilityAdded;
+        _abilitiesManager.OnAbilityRemove += OnAbilityRemove;
 
         _jumpAction = new NoSpamAction(200, Jump);
 
@@ -93,7 +101,7 @@ public class PlayerControl : MonoBehaviour
 
     private void UseAbilities()
     {
-        if (Input.GetKey("z"))
+        if (Input.GetKey("z") && _abilitiesManager.Contains(Ablilities.MoveObjects))
         {
             TryMoveObject();
         }
@@ -116,6 +124,22 @@ public class PlayerControl : MonoBehaviour
                 var rb = hitInfo.collider.gameObject.GetComponent<Rigidbody>();
                 rb.AddForce(transform.forward * MoveForce);
             }
+        }
+    }
+
+    private void OnAbilityAdded(Ablilities ability)
+    {
+        if (ability == Ablilities.DoubleJump)
+        {
+            MaxJumpCount++;
+        }
+    }
+
+    private void OnAbilityRemove(Ablilities ability)
+    {
+        if (ability == Ablilities.DoubleJump)
+        {
+            MaxJumpCount--;
         }
     }
 }
