@@ -22,5 +22,12 @@ public class ItemCollector : MonoBehaviour
                 TextUI.text = $"Coins: {itemsCount}";
             }
         }
+
+        if (other.gameObject.tag == "book")
+        {
+            Destroy(other.gameObject);
+
+            GameManager.Instance.UpdateGameState(GameState.ChooseAblility);
+        }
     }
 }

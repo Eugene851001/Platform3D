@@ -16,6 +16,7 @@ public class PlayerControl : MonoBehaviour
     public float CameraYaw;
     public Transform GroundChecker;
     public LayerMask GroundMask;
+    public HashSet<Ablilities> CurrentAbilities = new HashSet<Ablilities>();
 
     public GameObject Box;
 
@@ -51,7 +52,7 @@ public class PlayerControl : MonoBehaviour
 
         if (Input.GetKey(KeyCode.Escape))
         {
-            Application.Quit();
+            GameManager.Instance.UpdateGameState(GameState.Pause);
         }
     }
 

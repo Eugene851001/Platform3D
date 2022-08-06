@@ -40,7 +40,6 @@ public class StickyPlatform : MonoBehaviour
         {
             player = other.gameObject.GetComponent<PlayerControl>();
         }
-
     }
 
     private void OnTriggerExit(Collider other)

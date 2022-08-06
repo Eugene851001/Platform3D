@@ -24,12 +24,15 @@ public class ThirdPersonCamera : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        var dYaw = Input.GetAxis("Mouse X");
-        var dPitch = Input.GetAxis("Mouse Y");
+        if (GameManager.Instance.State == GameState.Main)
+        {
+            var dYaw = Input.GetAxis("Mouse X");
+            var dPitch = Input.GetAxis("Mouse Y");
 
-        currentYaw += dYaw;
-        currentPitch += dPitch;
-        currentPitch = Mathf.Clamp(currentPitch, MIN_PITCH, MAX_PICTH);
+            currentYaw += dYaw;
+            currentPitch += dPitch;
+            currentPitch = Mathf.Clamp(currentPitch, MIN_PITCH, MAX_PICTH);
+        }
     }
 
     private void LateUpdate()
