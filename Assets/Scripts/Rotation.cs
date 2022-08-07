@@ -15,6 +15,6 @@ public class Rotation : MonoBehaviour
         transform.Rotate(
             degrees * SpeedX * Time.deltaTime, 
             degrees * SpeedY * Time.deltaTime, 
-            degrees * SpeedZ * Time.deltaTime);
+            degrees * SpeedZ * Time.deltaTime, Space.World);
     }
 }

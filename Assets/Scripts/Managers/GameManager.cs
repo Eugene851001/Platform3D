@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.SceneManagement;
 
 public enum GameState
 {
@@ -22,11 +23,16 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        State = GameState.Main;
+        State = GameState.MainMenu;
     }
 
     public void UpdateGameState(GameState newState)
     {
+        if (State == GameState.MainMenu && newState == GameState.Main)
+        {
+            SceneManager.LoadScene(2);
+        }
+
         State = newState;
 
         OnStateUpdate?.Invoke(State);

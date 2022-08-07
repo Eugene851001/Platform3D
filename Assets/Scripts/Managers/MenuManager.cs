@@ -62,6 +62,7 @@ public class MenuManager : MonoBehaviour
 
     private bool IsMenuShowing(GameState state)
     {
-        return state == GameState.Pause || state == GameState.ChooseAblility;
+        return state == GameState.Pause 
+            || state == GameState.ChooseAblility || state == GameState.MainMenu;
     }
 }

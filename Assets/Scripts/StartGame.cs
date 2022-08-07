@@ -8,6 +8,6 @@ public class StartGame : MonoBehaviour
     public void Run()
     {
         Debug.Log("Starting game...");
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        GameManager.Instance.UpdateGameState(GameState.Main);
     }
 }
