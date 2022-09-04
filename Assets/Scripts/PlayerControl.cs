@@ -30,7 +30,7 @@ public class PlayerControl : MonoBehaviour
     private int JumpCount = 0;
 
     private AbilitiesManager _abilitiesManager;
-
+     
     private Collider _collider;
 
     private NoSpamAction _jumpAction;
@@ -121,14 +121,14 @@ public class PlayerControl : MonoBehaviour
     void TryMoveObject()
     { 
         var ray = new Ray() { origin = transform.position, direction = transform.forward };
-        var hitInfo = new RaycastHit();
+        RaycastHit hitInfo;
 
         if (Physics.Raycast(ray, out hitInfo, RaycastDist))
         {
             if (hitInfo.collider.gameObject.tag == "Moveable")
             {
                 var rb = hitInfo.collider.gameObject.GetComponent<Rigidbody>();
-                rb.AddForce(transform.forward * MoveForce);
+                rb.AddForceAtPosition(transform.forward * MoveForce, hitInfo.point);
             }
         }
     }

@@ -8,17 +8,21 @@ public abstract class Dialog : MonoBehaviour
 {
     [SerializeField] protected GameObject _panel;
     [SerializeField] protected TextMeshProUGUI _text;
-    [SerializeField] protected Button _firstButton;
-    [SerializeField] protected Button _secondButton;
+    [SerializeField] protected Button _closeButton;
 
     protected void InitDialog()
     {
         _text.text = "Dialog";
-        _firstButton.onClick.AddListener(OnFirstButton);
-        _secondButton.onClick.AddListener(OnSecondButton);
+        _closeButton.onClick.AddListener(HandleCloseButton);
     }
 
-    protected abstract void OnFirstButton();
+    private void OnDestroy()
+    {
+        _closeButton.onClick.RemoveListener(HandleCloseButton);
+    }
 
-    protected abstract void OnSecondButton();
+    protected void HandleCloseButton()
+    {
+        GameManager.Instance.UpdateGameState(GameState.Main);
+    }
 }

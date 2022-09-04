@@ -5,5 +5,7 @@ using UnityEngine;
 public enum Ablilities
 {
     DoubleJump,
+    Teleport,
     MoveObjects,
+    BlowObjects,
 }

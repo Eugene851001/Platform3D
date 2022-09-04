@@ -35,6 +35,11 @@ public class GameManager : MonoBehaviour
 
         State = newState;
 
+        if (State == GameState.GameOver)
+        {
+            SceneManager.LoadScene(3);
+        }
+
         OnStateUpdate?.Invoke(State);
     }
 
